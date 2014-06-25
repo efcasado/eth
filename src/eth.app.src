@@ -1,0 +1,6 @@
+{application, eth,
+ [{description, "Simple library for handling L2 Ethernet frames in Erlang"},
+  {vsn, "0.1"},
+  {applications, [kernel,
+                  stdlib]}
+ ]}.
