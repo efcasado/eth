@@ -220,4 +220,14 @@ mac_address_test_() ->
      ?_assertEqual(RawMACAddr2, eth:str_to_mac(eth:mac_to_str(RawMACAddr2)))
     ].
 
+mcast_addr_test_() ->
+    [
+     ?_assert(is_mcast_addr(eth:str_to_mac("FF:FF:FF:FF:FF:FF"))),
+     ?_assert(is_mcast_addr(eth:str_to_mac("F1:00:00:00:00:00"))),
+     ?_assert(is_mcast_addr(eth:str_to_mac("03:00:00:00:00:00"))),
+     ?_assertNot(is_mcast_addr(eth:str_to_mac("00:00:00:00:00:00"))),
+     ?_assertNot(is_mcast_addr(eth:str_to_mac("F2:FF:FF:FF:FF:FF"))),
+     ?_assertNot(is_mcast_addr(eth:str_to_mac("02:00:00:00:00:00")))
+    ].
+
 -endif.
