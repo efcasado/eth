@@ -53,7 +53,7 @@ $(BIN_DIR)/%.beam: %.erl
 pre-build:
 	@mkdir -p $(BIN_DIR)
 
-test:
+test: build
 	@$(foreach mod,$(MOD_NAMES),$(MAKE) $(mod)_test)
 
 %_test: $(BIN_DIR)/%.beam
