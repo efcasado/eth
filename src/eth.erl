@@ -31,6 +31,10 @@
 %%%=============================================================================
 -module(eth).
 
+-ifdef(EUNIT).
+-include_lib("eunit/include/eunit.hrl").
+-endif.
+
 -export([
          decode/1, encode/1,
          mac_to_str/1, str_to_mac/1,
@@ -189,3 +193,31 @@ to_hex(Bin) ->
 str_to_mac(MACAddr) ->
     list_to_binary(
       [ list_to_integer(S, 16) || S <- string:tokens(MACAddr, ":") ]).
+
+
+
+%% ============
+%%  Unit tests
+%% ============
+
+-ifdef(EUNIT).
+
+mac_address_test_() ->
+    StrMACAddr1 = "FF:FF:FF:FF:FF:FF",
+    RawMACAddr1 = <<255, 255, 255, 255, 255, 255>>,
+    StrMACAddr2 = "00:00:00:00:00:01",
+    RawMACAddr2 = <<0, 0, 0, 0, 0, 1>>,
+    [
+     ?_assertEqual(StrMACAddr1, eth:mac_to_str(RawMACAddr1)),
+     ?_assertEqual(StrMACAddr2, eth:mac_to_str(RawMACAddr2)),
+     ?_assertEqual(RawMACAddr1, eth:str_to_mac(StrMACAddr1)),
+     ?_assertEqual(RawMACAddr2, eth:str_to_mac(StrMACAddr2)),
+     ?_assertNotEqual(eth:mac_to_str(RawMACAddr2), eth:mac_to_str(RawMACAddr1)),
+     ?_assertNotEqual(eth:str_to_mac(StrMACAddr2), eth:str_to_mac(StrMACAddr1)),
+     ?_assertEqual(StrMACAddr1, eth:mac_to_str(eth:str_to_mac(StrMACAddr1))),
+     ?_assertEqual(StrMACAddr2, eth:mac_to_str(eth:str_to_mac(StrMACAddr2))),
+     ?_assertEqual(RawMACAddr1, eth:str_to_mac(eth:mac_to_str(RawMACAddr1))),
+     ?_assertEqual(RawMACAddr2, eth:str_to_mac(eth:mac_to_str(RawMACAddr2)))
+    ].
+
+-endif.
