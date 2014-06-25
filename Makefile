@@ -39,6 +39,8 @@ VPATH := $(SRC_DIR)
 #  Rules
 # =======
 
+.PHONY: test
+
 all: build test
 
 build: pre-build
